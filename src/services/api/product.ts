@@ -25,9 +25,19 @@ export const getProducts = async (page: number) : Promise<GetProductsResponse> =
       return {data, status};
     })
     .catch((error) => {
-      alert("오류입니다.");
-      // getProducts(page);
-      return error.message;
+      if (axios.isAxiosError(error)) {
+        alert("에러가 발생했습니다.");
+        getProducts(page);
+
+        console.log('error message: ', error.message);
+        return error.message;
+      } else {
+        alert("에러가 발생했습니다.");
+        getProducts(page);
+
+        console.log('unexpected error: ', error);
+        return error;
+      }
     });
 };
 
@@ -46,8 +56,19 @@ export const getProductDetail = async (id: number) : Promise<GetProductResponse>
       return {data, status};
     })
     .catch((error) => {
-      alert("오류입니다.");
-      return error.message;
+      if (axios.isAxiosError(error)) {
+        alert("에러가 발생했습니다.");
+        getProductDetail(id);
+
+        console.log('error message: ', error.message);
+        return error.message;
+      } else {
+        alert("에러가 발생했습니다.");
+        getProductDetail(id);
+
+        console.log('unexpected error: ', error);
+        return error;
+      }
     });
 
 }

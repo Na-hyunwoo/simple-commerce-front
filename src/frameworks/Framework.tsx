@@ -22,7 +22,7 @@ const FrameWork = () => {
     }
 
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     if(!loading) navigate("/list");
