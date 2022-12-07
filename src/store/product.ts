@@ -8,6 +8,7 @@ interface ProductType {
   price: number,
   description: string,
   tags: string[],
+  count?: number,
 }
 
 export const productListState = atom<ProductType[]>({
@@ -18,4 +19,19 @@ export const productListState = atom<ProductType[]>({
 export const pageState = atom<number>({
   key: "pageState",
   default: 1,
+})
+
+interface CardProductType {
+  id: number,
+  productName: string,
+  image: string,
+  price: number,
+  description: string,
+  tags: string[],
+  count: number,
+}
+
+export const cartProductListState = atom<CardProductType[]>({
+  key: "cartProductListState",
+  default: [],
 })

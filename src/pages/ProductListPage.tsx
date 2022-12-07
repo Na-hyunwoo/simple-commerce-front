@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { pageState, productListState } from "../store/product";
 import { useRecoilState } from "recoil";
 import Product from "../components/Product";
-import React, { useEffect, useRef, useState } from "react";
-import { getProducts } from "../services/api/product";
+import { useEffect, useRef, useState } from "react";
+import { getProductDetail, getProducts } from "../services/api/product";
 import { Loading } from "../assets/svgComponents/icon";
+import { useNavigate } from "react-router-dom";
 
 interface ProductType {
   id: number,
@@ -15,26 +16,48 @@ interface ProductType {
   tags: string[],
 }
 
-const ProductListContainer = () => {
+const ProductListPage = () => {
 
   const [productList, setProductList] = useRecoilState<ProductType[]>(productListState);
   const [page, setPage] = useRecoilState<number>(pageState);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+
+  const handleClick = async (id: number) => {
+    setLoading(true);
+    try {
+      const { data, status } = await getProductDetail(id);
+
+      if (status === 200) {
+        navigate(`/products/${data.id}`, {
+          state: {
+            ...data
+          }
+        });
+      }
+    } finally {
+      setLoading(false);
+    } 
+  };
 
   const updateProducts = async () => {
-    const plusedPage = page + 1;
-    setPage(plusedPage);
-
-    const { data, status } = await getProducts(plusedPage);
-
-    // console.log(data);
-
-    if (status === 200) {
-      setProductList((prev) => [...prev, ...data]);
-    }
-
     setLoading(true);
+    try {
+      const { data, status } = await getProducts(page);
+
+      // product가 중복으로 생성되는 것을 막기위한 로직입니다. 
+      const productIds = productList.map((product) => product.id);
+      const dataIds = data.map((product) => product.id);
+      const intersection = dataIds.filter((id) => !productIds.includes(id))
+
+      if (status === 200 && intersection.length > 0) {
+        setProductList((prev) => [...prev, ...data]);
+      }
+    } finally {
+      setLoading(false);
+    } 
   };
 
   const ref = useRef<HTMLDivElement>(null);
@@ -48,14 +71,10 @@ const ProductListContainer = () => {
   const callback = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
-        await updateProducts();
+        setPage((prev) => prev + 1);
       }
     })
   };
-
-  // useEffect(() => {
-  //   console.log(page);
-  // }, [page]);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -66,15 +85,22 @@ const ProductListContainer = () => {
     return () => observer.disconnect()
   }, []);
 
+  useEffect(() => {
+    if(page !== 1) updateProducts();
+  }, [page]);
+
   return (
     <Wrapper>
       {productList.map((product) => (
         <Product 
           key={product.id}
-          name={product.productName}
+          id={product.id}
+          productName={product.productName}
           price={product.price}
           image={product.image}
           tag={product.tags[0]}
+          handleProductClick={() => handleClick(product.id)}
+          isInCart={false}
         />
       ))}
       <MockElement ref={ref}/>
@@ -83,9 +109,9 @@ const ProductListContainer = () => {
   );
 }
 
-export default ProductListContainer;
+export default ProductListPage;
 
-const Wrapper = styled.div`
+const Wrapper = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 

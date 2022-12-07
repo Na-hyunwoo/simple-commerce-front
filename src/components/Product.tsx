@@ -3,35 +3,71 @@ import { BODY1, PRIMARY, SUBTITLE } from "../styles";
 import Tag from "./Tag";
 import Counter from "./Counter";
 import useCounter from "../hooks/useCounter";
+import { css } from "styled-components";
+import { memo, useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { cartProductListState } from "../store/product";
 
 interface Props {
-  name: string,
+  id: number,
+  productName: string,
   price: number,
   image: string,
   tag: string,
-  isShoppingBasket?: boolean,
+  isInCart: boolean,
+  handleProductClick?: () => void,
+  initialCount?: number,
 }
 
 const Product = (props: Props) => {
 
-  const {name, price, image, tag, isShoppingBasket} = props;
+  const {id, productName, price, image, tag, isInCart, handleProductClick, initialCount} = props;
   const KRW = Intl.NumberFormat().format(price);
 
-  const {count, handlePlus, handleMinus} = useCounter();
+  // 근데 컴포넌트 안에서 전체 상태 변화 일으키는거 맞나. 
+  const [cartProductList, setCartProductList] = useRecoilState(cartProductListState);
+
+  const [count, setCount] = useState<number>(initialCount ?? 0);
+
+  const handlePlus = () => {
+    if (count <= 99) setCount((prev) => prev + 1);
+  };
+
+  const handleMinus = () => {
+    if (count >= 2) setCount((prev) => prev - 1);
+  };
+
+  // 그러면 count를 전역으로 관리해야 하나. 
+  useEffect(() => {
+    if (isInCart) {
+      const products = cartProductList;
+      const newProducts = products.map((product) => {
+        if (product.id === id) {
+          return {
+            ...product,
+            count: count
+          }
+        } else {
+          return product;
+        }
+      })
+      setCartProductList(newProducts);
+    }
+  }, [count]);
 
   return (
-    <Wrapper>
+    <Wrapper onClick={handleProductClick} isInCart={isInCart}>
       <Img 
         src={image}
-        alt={name}
+        alt={productName}
       />
-      <Name>{name}</Name>
+      <Name>{productName}</Name>
       <Body>
         <Price>{`${KRW}원`}</Price>
         <Tag label={tag}/>
       </Body>
       <CounterContainer>
-        {isShoppingBasket && (
+        {isInCart && (
           <Counter 
             count={count}
             handlePlus={handlePlus}
@@ -45,17 +81,22 @@ const Product = (props: Props) => {
 
 export default Product;
 
-const Wrapper = styled.div`
+const Wrapper = styled.li<{isInCart: boolean}>`
   background: #FFF;
 
   display: flex;
   flex-direction: column;
 
   width: 152px;
+  height: max-content;
   margin: 0 auto;
 
   padding: 16px;
   border-radius: 8px;
+
+  ${({isInCart}) => !isInCart && css`
+    cursor: pointer;
+  `}
 `;
 
 const Img = styled.img`

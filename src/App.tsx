@@ -1,19 +1,28 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import ProductListContainer from "./containers/ProductListContainer";
+import ProductListPage from "./pages/ProductListPage";
 import FrameWork from "./frameworks/Framework";
+import ProductDetailPage from "./pages/ProductDetailPage";
 import { RecoilRoot } from "recoil";
+import CartPage from "./pages/CartPage";
+import { QueryClientProvider, QueryClient} from "react-query";
 
 function App() {
 
+  const queryClient = new QueryClient();
+
   return (
     <RecoilRoot>
-      <BrowserRouter>
-        <Routes>
-          <Route path = "/" element={<FrameWork />}>
-            <Route path = "" element={<ProductListContainer />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<FrameWork />}>
+              <Route path="list" element={<ProductListPage />} />
+              <Route path="products/:productId" element={<ProductDetailPage />} />
+              <Route path="cart" element={<CartPage />}/>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
     </RecoilRoot>
   );
 }

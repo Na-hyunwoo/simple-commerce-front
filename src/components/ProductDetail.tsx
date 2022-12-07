@@ -7,7 +7,7 @@ import ViewMoreContainer from "../containers/ViewMoreContainer";
 import TagContainer from "../containers/TagContainer";
 
 interface Props {
-  name: string,
+  productName: string,
   price: number,
   image: string,
   tags: string[],
@@ -16,7 +16,7 @@ interface Props {
 
 const ProductDetail = (props: Props) => {
 
-  const {name, price, image, tags, description} = props;
+  const {productName, price, image, tags, description} = props;
   const KRW = Intl.NumberFormat().format(price);
 
   const [viewMoreValue, setViewMoreValue] = useState<"펼쳐보기" | "접기">("펼쳐보기");
@@ -40,9 +40,9 @@ const ProductDetail = (props: Props) => {
     <Wrapper>
       <Img 
         src={image} 
-        alt={name}
+        alt={productName}
       />
-      <Name>{name}</Name>
+      <Name>{productName}</Name>
       <Price>{`${KRW}원`}</Price>
       <TagContainer tags={tags}/>
       <Description 
@@ -64,12 +64,16 @@ const ProductDetail = (props: Props) => {
 export default ProductDetail;
 
 const Wrapper = styled.div`
+  background: #FFF;
+
   display: flex;
   flex-direction: column;
 
   padding: 32px;
+  margin: 0 auto;
 
   width: 384px;
+  height: max-content;
 
   border-radius: 16px;
 `;

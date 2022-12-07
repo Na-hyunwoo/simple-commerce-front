@@ -2,15 +2,16 @@ import styled from "styled-components";
 import { PRIMARY } from "../styles";
 
 interface Props {
-  label: string
+  label: string,
+  onClick: () => void,
 }
 
 const Button = (props: Props) => {
 
-  const { label } = props;
+  const { label, onClick } = props;
 
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick}>
       <Label>{label}</Label>
     </Wrapper>
   ); 
@@ -25,6 +26,8 @@ const Wrapper = styled.button`
   border: 0;
   background: ${PRIMARY};
   border-radius: 8px;
+
+  cursor: pointer;
 `;
 
 const Label = styled.p`

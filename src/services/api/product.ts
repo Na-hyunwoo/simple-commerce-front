@@ -25,12 +25,29 @@ export const getProducts = async (page: number) : Promise<GetProductsResponse> =
       return {data, status};
     })
     .catch((error) => {
-      if (axios.isAxiosError(error)) {
-        console.log('error message: ', error.message);
-        return error.message;
-      } else {
-        console.log('unexpected error: ', error);
-        return error;
-      }
+      alert("오류입니다.");
+      // getProducts(page);
+      return error.message;
     });
 };
+
+interface GetProductResponse {
+  data: ProductType,
+  status: number,
+};
+
+export const getProductDetail = async (id: number) : Promise<GetProductResponse> => {
+
+  const url = `http://localhost:8000/products/${id}`;
+
+  return await apiInstance
+    .get<GetProductResponse>(url)
+    .then(({data, status}) => {
+      return {data, status};
+    })
+    .catch((error) => {
+      alert("오류입니다.");
+      return error.message;
+    });
+
+}

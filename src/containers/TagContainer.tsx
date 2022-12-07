@@ -11,9 +11,9 @@ const TagContainer = (props: Props) => {
 
   return (
     <Wrapper>
-      {tags.map((tag) => (
+      {tags.map((tag, index) => (
         <Tag 
-          key={tag}
+          key={`${tag}${index}`}
           label={tag}
         />
       ))}
