@@ -1,46 +1,38 @@
-# Getting Started with Create React App
+## Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**상품 목록 페이지와 장바구니 페이지로 구성된 간단한 커머스 서비스**
 
-## Available Scripts
+## Tech Stack
+- React, Typescript, Axios, Recoil, Styled-components
+## Features
 
-In the project directory, you can run:
+**메인 페이지**
 
-### `npm start`
+- API 데이터를 사용해 리스트 뷰 및 인피니트 스크롤 구현 
+- 리스트 호출 시 10개씩 노출 
+- 상품 태그 UI는 첫 번째 데이터만 노출
+- API는 한 번씩 호출 
+- 로딩 중일 때 로딩 UI가 노출
+- 결과 값이 없을 경우, 더 이상 호출하지 않음
+- 에러가 났을 경우, 알럿 노출 및 확인 클릭 시 API호출 재시도
+- 상세 페이지로 이동 후 뒤로 가기 시 스크롤 y값 유지 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**장바구니 페이지**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 헤더 우측 상단 장바구니 아이콘 클릭 시 장바구니 페이지로 이동
+- 장바구니에 담긴 아이템의 수량 개수 조정
+- 수량 변경 버튼 (-, +)은 최소 수량 1 / 최대 수량 99일 때, 비활성화 처리
+- 총 결제 금액 노출 
 
-### `npm test`
+**상세 페이지**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 상세 API를 호출하여, 해당 데이터를 디자인에 맞게 구현
+- 상품 설명 텍스트 3줄 초과 시, 말줄임 처리 및 펼쳐보기 노출
+- 장바구니 담기 버튼 클릭 시, 해당 아이템 장바구니 담기 기능 구현
+- 단, 장바구니에 이미 담겨 있는 아이템인 경우, '장바구니 빼기'로 버튼 타이틀 변경
+- 장바구니에 아이템이 담겨있을 경우, 장바구니 아이콘의 카운트 뱃지에 수량 노출 
+## Getting Started
 
-### `npm run build`
+1. npm install
+2. npm start
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
