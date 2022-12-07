@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState,  } from "react";
 import styled from "styled-components";
-import { BODY2, GRAY, PRIMARY, SUBTITLE, TITLE } from "../styles";
-import Tag from "./Tag";
+import { BODY2, PRIMARY, SUBTITLE, TITLE } from "../styles";
 import { css } from "styled-components";
 import ViewMoreContainer from "../containers/ViewMoreContainer";
 import TagContainer from "../containers/TagContainer";

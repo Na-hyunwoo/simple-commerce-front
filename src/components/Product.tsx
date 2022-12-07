@@ -2,9 +2,8 @@ import styled from "styled-components";
 import { BODY1, PRIMARY, SUBTITLE } from "../styles";
 import Tag from "./Tag";
 import Counter from "./Counter";
-import useCounter from "../hooks/useCounter";
 import { css } from "styled-components";
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { cartProductListState } from "../store/product";
 
@@ -24,7 +23,6 @@ const Product = (props: Props) => {
   const {id, productName, price, image, tag, isInCart, handleProductClick, initialCount} = props;
   const KRW = Intl.NumberFormat().format(price);
 
-  // 근데 컴포넌트 안에서 전체 상태 변화 일으키는거 맞나. 
   const [cartProductList, setCartProductList] = useRecoilState(cartProductListState);
 
   const [count, setCount] = useState<number>(initialCount ?? 0);
@@ -37,7 +35,6 @@ const Product = (props: Props) => {
     if (count >= 2) setCount((prev) => prev - 1);
   };
 
-  // 그러면 count를 전역으로 관리해야 하나. 
   useEffect(() => {
     if (isInCart) {
       const products = cartProductList;

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useState } from "react";
 import { BODY2, GRAY } from "../styles";
   
 

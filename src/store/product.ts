@@ -1,5 +1,4 @@
 import { atom } from "recoil";
-import { getProducts } from "../services/api/product";
 
 interface ProductType {
   id: number,

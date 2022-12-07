@@ -2,7 +2,6 @@ import styled from "styled-components";
 import Product from "../components/Product";
 import { useRecoilValue } from "recoil";
 import { cartProductListState } from "../store/product";
-import { count } from "console";
 
 const CartProductListContainer = () => {
 
